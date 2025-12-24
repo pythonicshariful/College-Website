@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}নোটিশ ম্যানেজমেন্ট | AMW College Admin{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-bell"></i> নোটিশ ম্যানেজমেন্ট</h1>
+        <div>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i>
+                ড্যাশবোর্ড</a>
+        </div>
+    </div>
+
+    <!-- Add Notice Form -->
+    <div class="admin-card">
+        <h2><i class="fas fa-plus-circle"></i> নতুন নোটিশ যোগ করুন</h2>
+        <form method="POST" action="{{ url_for('admin_add_notice') }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">শিরোনাম *</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">বিবরণ</label>
+                <textarea id="description" name="description" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="date">তারিখ *</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="file">PDF ফাইল (ঐচ্ছিক)</label>
+                <input type="file" id="file" name="file" accept=".pdf">
+            </div>
+
+            <div class="form-group">
+                <label for="image">ছবি (ঐচ্ছিক)</label>
+                <input type="file" id="image" name="image" accept=".jpg,.jpeg,.png,.webp">
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> নোটিশ যোগ করুন
+            </button>
+        </form>
+    </div>
+
+    <!-- Existing Notices -->
+    <div class="admin-card">
+        <h2><i class="fas fa-list"></i> সকল নোটিশ</h2>
+        {% if notices %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>শিরোনাম</th>
+                    <th>তারিখ</th>
+                    <th>ফাইল</th>
+                    <th>ছবি</th>
+                    <th>কাজ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for notice in notices %}
+                <tr>
+                    <td>{{ notice.title }}</td>
+                    <td>{{ notice.date.strftime('%d/%m/%Y') if notice.date else 'N/A' }}</td>
+                    <td>
+                        {% if notice.file_path %}
+                        <a href="{{ url_for('uploaded_file', filename=notice.file_path) }}" target="_blank">
+                            <i class="fas fa-file-pdf"></i> দেখুন
+                        </a>
+                        {% else %}
+                        <span style="color: #999;">নেই</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if notice.image_path %}
+                        <a href="{{ url_for('uploaded_file', filename=notice.image_path) }}" target="_blank">
+                            <i class="fas fa-image"></i> দেখুন
+                        </a>
+                        {% else %}
+                        <span style="color: #999;">নেই</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('admin_delete_notice', id=notice.id) }}" class="btn btn-danger"
+                            onclick="return confirm('আপনি কি নিশ্চিত এই নোটিশটি মুছে ফেলতে চান?')">
+                            <i class="fas fa-trash"></i> মুছুন
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="text-align: center; padding: 2rem; color: #999;">কোনো নোটিশ নেই</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

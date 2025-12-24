@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}হোম | সরকারি আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Two Column Layout -->
+    <div class="two-column">
+        <!-- Left Column - Notice Board -->
+        <div>
+            <div class="notice-board">
+                <h2><i class="fas fa-bell"></i> নোটিশ বোর্ড</h2>
+                {% if notices %}
+                {% for notice in notices %}
+                <div class="notice-item">
+                    <span class="notice-date">{{ notice.date.strftime('%d %B %Y') if notice.date else 'তারিখ নেই'
+                        }}</span>
+                    {% if notice.file_path %}
+                    <a href="{{ url_for('uploaded_file', filename=notice.file_path) }}" target="_blank">
+                        <i class="fas fa-file-pdf"></i> {{ notice.title }}
+                    </a>
+                    {% else %}
+                    <div>{{ notice.title }}</div>
+                    {% endif %}
+                    {% if notice.description %}
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">{{ notice.description[:100] }}...</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <a href="{{ url_for('notices') }}" class="view-all-btn">সকল নোটিশ দেখুন</a>
+                {% else %}
+                <p style="text-align: center; padding: 2rem; color: #999;">কোনো নোটিশ নেই</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Right Column - Sidebar -->
+        <div>
+            <!-- Principal's Message -->
+            <div class="sidebar-section">
+                <h3><i class="fas fa-user-tie"></i> অধ্যক্ষ মহোদয়</h3>
+                <img src="{{ url_for('static', filename='images/principal-sir-pic.webp') }}" alt="Principal"
+                    class="principal-img"
+                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect fill=%22%237B1F1F%22 width=%22300%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3EPrincipal%3C/text%3E%3C/svg%3E'">
+                <p>আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ একটি ঐতিহ্যবাহী শিক্ষা প্রতিষ্ঠান। আমরা শিক্ষার্থীদের সর্বোত্তম
+                    শিক্ষা প্রদানে প্রতিশ্রুতিবদ্ধ।</p>
+            </div>
+
+            <!-- Emergency Hotline -->
+            <div class="sidebar-section">
+                <h3><i class="fas fa-phone-alt"></i> জরুরি হটলাইন</h3>
+                <div style="text-align: center;">
+                    <img src="{{ url_for('static', filename='images/hotline.webp') }}" alt="Hotline"
+                        style="width: 100%; max-width: 250px;"
+                        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22250%22 height=%22150%22%3E%3Crect fill=%22%237B1F1F%22 width=%22250%22 height=%22150%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2224%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E999%3C/text%3E%3C/svg%3E'">
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="sidebar-section">
+                <h3><i class="fas fa-link"></i> দ্রুত লিংক</h3>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <a href="{{ url_for('notices') }}"
+                        style="color: var(--primary-maroon); text-decoration: none; padding: 0.5rem; border-left: 3px solid var(--accent-gold);">
+                        <i class="fas fa-bell"></i> নোটিশ
+                    </a>
+                    <a href="{{ url_for('results') }}"
+                        style="color: var(--primary-maroon); text-decoration: none; padding: 0.5rem; border-left: 3px solid var(--accent-gold);">
+                        <i class="fas fa-chart-line"></i> ফলাফল
+                    </a>
+                    <a href="#"
+                        style="color: var(--primary-maroon); text-decoration: none; padding: 0.5rem; border-left: 3px solid var(--accent-gold);">
+                        <i class="fas fa-user-plus"></i> ভর্তি
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Access Cards -->
+    <div class="quick-cards">
+        <a href="#" class="quick-card">
+            <img src="{{ url_for('static', filename='images/suborno-img.webp') }}" alt="Golden Jubilee"
+                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Ccircle fill=%22%23D4AF37%22 cx=%2240%22 cy=%2240%22 r=%2240%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2230%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E50%3C/text%3E%3C/svg%3E'">
+            <h4>সুবর্ণজয়ন্তী কর্নার</h4>
+        </a>
+        <a href="#" class="quick-card">
+            <img src="{{ url_for('static', filename='images/admission.webp') }}" alt="Admission"
+                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Ccircle fill=%22%237B1F1F%22 cx=%2240%22 cy=%2240%22 r=%2240%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2240%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E+%3C/text%3E%3C/svg%3E'">
+            <h4>ভর্তি তথ্য</h4>
+        </a>
+        <a href="#" class="quick-card">
+            <img src="{{ url_for('static', filename='images/academy.webp') }}" alt="Academic"
+                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Ccircle fill=%22%237B1F1F%22 cx=%2240%22 cy=%2240%22 r=%2240%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2230%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E📚%3C/text%3E%3C/svg%3E'">
+            <h4>একাডেমিক পেপার</h4>
+        </a>
+        <a href="{{ url_for('results') }}" class="quick-card">
+            <img src="{{ url_for('static', filename='images/result.webp') }}" alt="Results"
+                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Ccircle fill=%22%237B1F1F%22 cx=%2240%22 cy=%2240%22 r=%2240%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2230%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E📊%3C/text%3E%3C/svg%3E'">
+            <h4>ফলাফল</h4>
+        </a>
+    </div>
+
+    <!-- About Section -->
+    <div class="about-section">
+        <h2><i class="fas fa-university"></i> প্রতিষ্ঠানের ইতিহাস</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>
+                    সরকারি আদমজীনগর এম ডব্লিউ কলেজ, নারায়ণগঞ্জ জেলার একটি ঐতিহ্যবাহী শিক্ষা প্রতিষ্ঠান, যা আদমজী ইপিজেড
+                    সংলগ্ন কদমতলী এলাকায় অবস্থিত। ৮০'র দশকে জাতীয়করণ হওয়া এই কলেজে প্রায় ২০০০ শিক্ষার্থী পড়াশোনা
+                    করে।
+                </p>
+                <p>
+                    কলেজে রয়েছে বিশাল খেলার মাঠ, দুটি সুউচ্চ ভবন, পাঠাগার, ক্যান্টিন ও শহীদমিনার। প্রতিষ্ঠানটি শিক্ষার
+                    মানোন্নয়নে সর্বদা প্রতিশ্রুতিবদ্ধ এবং শিক্ষার্থীদের সর্বোত্তম শিক্ষা প্রদানে নিরলস কাজ করে যাচ্ছে।
+                </p>
+            </div>
+            <div>
+                <img src="{{ url_for('static', filename='images/college.webp') }}" alt="College Building"
+                    class="about-img"
+                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%237B1F1F%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2224%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3ECollege Building%3C/text%3E%3C/svg%3E'">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

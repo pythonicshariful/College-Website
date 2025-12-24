@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}ফলাফল দেখুন | সরকারি আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="admin-card" style="max-width: 800px; margin: 2rem auto;">
+        <h2 style="text-align: center; color: var(--primary-maroon); margin-bottom: 2rem;">
+            <i class="fas fa-search"></i> আপনার ফলাফল দেখুন
+        </h2>
+
+        <form method="POST" action="{{ url_for('result_lookup') }}">
+            <div class="form-group">
+                <label for="class_name">শ্রেণি *</label>
+                <select id="class_name" name="class_name" required>
+                    <option value="">শ্রেণি নির্বাচন করুন</option>
+                    {% for class in classes %}
+                    <option value="{{ class }}">{{ class }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="session">সেশন *</label>
+                <select id="session" name="session" required>
+                    <option value="">সেশন নির্বাচন করুন</option>
+                    {% for sess in sessions %}
+                    <option value="{{ sess }}">{{ sess }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="section">বিভাগ *</label>
+                <select id="section" name="section" required>
+                    <option value="">বিভাগ নির্বাচন করুন</option>
+                    {% for sec in sections %}
+                    <option value="{{ sec }}">{{ sec }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="roll_number">রোল নম্বর *</label>
+                <input type="text" id="roll_number" name="roll_number" required placeholder="আপনার রোল নম্বর লিখুন">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-search"></i> ফলাফল খুঁজুন
+            </button>
+        </form>
+    </div>
+
+    <!-- Display Result -->
+    {% if student_result %}
+    <div class="admin-card"
+        style="max-width: 900px; margin: 2rem auto; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h2 style="color: var(--primary-maroon); margin-bottom: 0.5rem;">
+                <i class="fas fa-certificate"></i> পরীক্ষার ফলাফল
+            </h2>
+            <p style="font-size: 1.125rem; color: #666;">{{ result_info.title }}</p>
+        </div>
+
+        <!-- Student Info -->
+        <div
+            style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <p style="margin-bottom: 0.5rem;"><strong>নাম:</strong> {{ student_result.student_name }}</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>রোল নম্বর:</strong> {{ student_result.roll_number }}</p>
+                </div>
+                <div>
+                    <p style="margin-bottom: 0.5rem;"><strong>শ্রেণি:</strong> {{ result_info.class_name }}</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>সেশন:</strong> {{ result_info.session }}</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>বিভাগ:</strong> {{ result_info.section }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subject Results -->
+        <div
+            style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <h3 style="color: var(--primary-maroon); margin-bottom: 1rem;">
+                <i class="fas fa-book"></i> বিষয়ভিত্তিক নম্বর
+            </h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>বিষয়</th>
+                        <th style="text-align: right;">প্রাপ্ত নম্বর</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for subject, marks in student_result.subject_results.items() %}
+                    <tr>
+                        <td>{{ subject }}</td>
+                        <td style="text-align: right; font-weight: 600;">{{ marks }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Total & Grade -->
+        <div
+            style="background: linear-gradient(135deg, var(--primary-maroon), var(--dark-maroon)); color: white; padding: 2rem; border-radius: 8px; text-align: center;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;">
+                <div>
+                    <p style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 0.5rem;">মোট নম্বর</p>
+                    <p style="font-size: 2rem; font-weight: 700;">{{ student_result.total_marks }}</p>
+                </div>
+                <div>
+                    <p style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 0.5rem;">শতাংশ</p>
+                    <p style="font-size: 2rem; font-weight: 700;">{{ "%.2f"|format(student_result.percentage) }}%</p>
+                </div>
+                <div>
+                    <p style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 0.5rem;">গ্রেড</p>
+                    <p style="font-size: 2rem; font-weight: 700;">{{ student_result.grade }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Print Button -->
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <button onclick="window.print()" class="btn btn-secondary">
+                <i class="fas fa-print"></i> প্রিন্ট করুন
+            </button>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    @media print {
+
+        .main-nav,
+        .news-ticker,
+        .main-footer,
+        button {
+            display: none !important;
+        }
+    }
+</style>
+{% endblock %}

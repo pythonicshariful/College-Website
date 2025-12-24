@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}ফলাফল ম্যানেজমেন্ট | AMW College Admin{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-chart-line"></i> ফলাফল ম্যানেজমেন্ট</h1>
+        <div>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i>
+                ড্যাশবোর্ড</a>
+        </div>
+    </div>
+
+    <!-- Add Result Form -->
+    <div class="admin-card">
+        <h2><i class="fas fa-plus-circle"></i> নতুন ফলাফল যোগ করুন</h2>
+        <form method="POST" action="{{ url_for('admin_add_result') }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">শিরোনাম *</label>
+                <input type="text" id="title" name="title" required
+                    placeholder="উদাহরণ: একাদশ শ্রেণি বার্ষিক পরীক্ষা ২০২৫">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="class_name">শ্রেণি *</label>
+                    <select id="class_name" name="class_name" required>
+                        <option value="">শ্রেণি নির্বাচন করুন</option>
+                        <option value="Inter First Year">Inter First Year</option>
+                        <option value="Inter Second Year">Inter Second Year</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="session">সেশন *</label>
+                    <input type="text" id="session" name="session" required placeholder="উদাহরণ: 2019-2020, 2021-2022">
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="section">বিভাগ *</label>
+                    <select id="section" name="section" required>
+                        <option value="">বিভাগ নির্বাচন করুন</option>
+                        <option value="Science">Science</option>
+                        <option value="Business Studies">Business Studies</option>
+                        <option value="Arts">Arts</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="exam_type">পরীক্ষার ধরন</label>
+                    <input type="text" id="exam_type" name="exam_type" placeholder="উদাহরণ: বার্ষিক, অর্ধবার্ষিক">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="date">তারিখ *</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="file">Excel ফাইল * (.xlsx, .xls)</label>
+                <input type="file" id="file" name="file" accept=".xlsx,.xls" required>
+                <small style="color: #666; display: block; margin-top: 0.5rem;">
+                    <i class="fas fa-info-circle"></i> Excel ফাইলে অবশ্যই থাকতে হবে: Roll Number, Name, বিষয়ের নাম
+                    (কলাম), Total, Percentage, Grade
+                </small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> ফলাফল যোগ করুন
+            </button>
+        </form>
+    </div>
+
+    <!-- Existing Results -->
+    <div class="admin-card">
+        <h2><i class="fas fa-list"></i> সকল ফলাফল</h2>
+        {% if results %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>শিরোনাম</th>
+                    <th>শ্রেণি</th>
+                    <th>সেশন</th>
+                    <th>বিভাগ</th>
+                    <th>পরীক্ষা</th>
+                    <th>তারিখ</th>
+                    <th>শিক্ষার্থী</th>
+                    <th>কাজ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.title }}</td>
+                    <td>{{ result.class_name }}</td>
+                    <td>{{ result.session }}</td>
+                    <td>{{ result.section }}</td>
+                    <td>{{ result.exam_type or 'N/A' }}</td>
+                    <td>{{ result.date.strftime('%d/%m/%Y') if result.date else 'N/A' }}</td>
+                    <td>{{ result.student_results|length }}</td>
+                    <td>
+                        <a href="{{ url_for('uploaded_file', filename=result.file_path) }}" target="_blank"
+                            class="btn btn-secondary" style="padding: 0.5rem 1rem; margin-right: 0.5rem;">
+                            <i class="fas fa-file-excel"></i> Excel
+                        </a>
+                        <a href="{{ url_for('admin_delete_result', id=result.id) }}" class="btn btn-danger"
+                            style="padding: 0.5rem 1rem;"
+                            onclick="return confirm('আপনি কি নিশ্চিত এই ফলাফলটি মুছে ফেলতে চান? এটি সকল শিক্ষার্থীর ফলাফলও মুছে ফেলবে।')">
+                            <i class="fas fa-trash"></i> মুছুন
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="text-align: center; padding: 2rem; color: #999;">কোনো ফলাফল নেই</p>
+        {% endif %}
+    </div>
+
+    <!-- Excel Format Guide -->
+    <div class="admin-card" style="background-color: #f0f9ff; border-left: 4px solid #0284c7;">
+        <h3 style="color: #0284c7;"><i class="fas fa-book"></i> Excel ফাইল ফরম্যাট গাইড</h3>
+        <p>আপনার Excel ফাইলে নিম্নলিখিত কলামগুলি থাকতে হবে:</p>
+        <table class="table" style="margin-top: 1rem;">
+            <thead>
+                <tr>
+                    <th>Roll Number</th>
+                    <th>Name</th>
+                    <th>Bengali</th>
+                    <th>English</th>
+                    <th>Math</th>
+                    <th>...</th>
+                    <th>Total</th>
+                    <th>Percentage</th>
+                    <th>Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>101</td>
+                    <td>আব্দুল করিম</td>
+                    <td>85</td>
+                    <td>78</td>
+                    <td>92</td>
+                    <td>...</td>
+                    <td>450</td>
+                    <td>90.0</td>
+                    <td>A+</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top: 1rem;"><strong>নোট:</strong> Roll Number এবং Name কলাম আবশ্যক। বিষয়ের কলামগুলি আপনার
+            প্রয়োজন অনুযায়ী যোগ করুন।</p>
+    </div>
+</div>
+{% endblock %}

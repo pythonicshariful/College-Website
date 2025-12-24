@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}ফলাফল | সরকারি আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="notice-board">
+        <h2><i class="fas fa-chart-line"></i> পরীক্ষার ফলাফল</h2>
+        {% if results %}
+        {% for result in results %}
+        <div class="notice-item">
+            <span class="notice-date">{{ result.date.strftime('%d %B %Y') if result.date else 'তারিখ নেই' }}</span>
+            <a href="{{ url_for('uploaded_file', filename=result.file_path) }}" target="_blank">
+                <i class="fas fa-file-pdf"></i> {{ result.title }}
+            </a>
+            {% if result.class_name or result.exam_type %}
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
+                {% if result.class_name %}<strong>শ্রেণি:</strong> {{ result.class_name }}{% endif %}
+                {% if result.exam_type %} | <strong>পরীক্ষা:</strong> {{ result.exam_type }}{% endif %}
+            </p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% else %}
+        <p style="text-align: center; padding: 3rem; color: #999;">কোনো ফলাফল পাওয়া যায়নি</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

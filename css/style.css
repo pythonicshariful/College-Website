@@ -1,0 +1,546 @@
+/* Main Styles for Ideal School & College, Motijheel Website */
+
+:root {
+    /* Main color palette - Eye friendly colors */
+    --primary-color: #1e3a8a;        /* Deep blue */
+    --secondary-color: #6c7989;      /* Muted blue-grey */
+    --success-color: #5a9a78;        /* Soft green */
+    --accent-color: #dc2626;         /* Red accent */
+    --info-color: #5cacbc;           /* Soft teal */
+    --warning-color: #e6c068;        /* Muted yellow */
+    --danger-color: #d16b6b;         /* Soft red */
+    
+    /* Neutral colors */
+    --dark-color: #1f2937;           /* Dark grey */
+    --light-color: #f4f6f9;          /* Off-white with slight blue tint */
+    --body-color: #4a4e57;           /* Dark grey for text */
+    --body-bg: #ffffff;              /* White background */
+    --muted-text: #76808f;           /* Muted text color */
+    
+    /* Additional colors */
+    --border-color: #e4e7ec;         /* Soft grey for borders */
+    --card-bg: #ffffff;              /* Card background */
+    --header-bg: #f1f5fb;            /* Light blue-grey for header */
+    --footer-bg: #1e3a8a;            /* Deep blue for footer */
+    --hover-color: #3b5a85;          /* Darker blue for hover states */
+    --box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    --transition: all 0.3s ease;
+    
+    /* Typography */
+    --font-base: "Hind Siliguri", sans-serif;
+    --font-size-base: 16px;
+    --line-height-base: 1.6;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-xxl: 3rem;
+    
+    /* Border radius */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-base);
+    color: var(--body-color);
+    background-color: var(--body-bg);
+    line-height: var(--line-height-base);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Top Info Bar */
+.top-info-bar {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+}
+
+.top-info-bar a {
+    color: white;
+    text-decoration: none;
+}
+
+.top-info-bar a:hover {
+    text-decoration: underline;
+}
+
+/* Header */
+.main-header {
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-top {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+.school-info h1 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 0.25rem;
+}
+
+.school-info p {
+    font-size: 0.875rem;
+    color: var(--muted-text);
+    margin: 0;
+}
+
+/* Navigation */
+.main-nav {
+    background-color: var(--primary-color);
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.main-nav li {
+    position: relative;
+}
+
+.main-nav a {
+    display: block;
+    padding: 1rem 1.5rem;
+    color: white;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.main-nav a:hover {
+    background-color: var(--hover-color);
+}
+
+.main-nav .dropdown {
+    position: relative;
+}
+
+.main-nav .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    min-width: 250px;
+    box-shadow: var(--box-shadow);
+    z-index: 1000;
+}
+
+.main-nav .dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.main-nav .dropdown-menu a {
+    color: var(--body-color);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.main-nav .dropdown-menu a:hover {
+    background-color: var(--light-color);
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 500px;
+    overflow: hidden;
+}
+
+.hero-slider {
+    position: relative;
+    height: 100%;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.hero-slide.active {
+    opacity: 1;
+}
+
+.hero-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(30, 58, 138, 0.6), rgba(30, 58, 138, 0.8));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.hero-content h2 {
+    font-size: 3rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+/* Quick Access Buttons */
+.quick-access {
+    background-color: var(--light-color);
+    padding: 2rem 0;
+}
+
+.quick-btn {
+    background-color: white;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius-md);
+    text-decoration: none;
+    display: inline-block;
+    font-weight: var(--font-weight-semibold);
+    transition: var(--transition);
+    margin: 0.5rem;
+}
+
+.quick-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Notice Board */
+.notice-board {
+    background-color: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    margin: 2rem 0;
+}
+
+.notice-board h3 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.notice-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.notice-item:hover {
+    background-color: var(--light-color);
+}
+
+.notice-date {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.875rem;
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+.notice-title {
+    color: var(--body-color);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Leadership Section */
+.leadership-section {
+    padding: 3rem 0;
+    background-color: var(--light-color);
+}
+
+.leadership-card {
+    background-color: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.leadership-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.leadership-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 4px solid var(--primary-color);
+}
+
+.leadership-card h4 {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.leadership-card p {
+    color: var(--muted-text);
+    font-size: 0.875rem;
+}
+
+/* About Section */
+.about-section {
+    padding: 3rem 0;
+}
+
+.about-section h2 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.about-section p {
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+/* Statistics Section */
+.stats-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--hover-color));
+    color: white;
+    padding: 3rem 0;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 2rem;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: var(--font-weight-bold);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 1.125rem;
+    opacity: 0.9;
+}
+
+/* News Section */
+.news-section {
+    padding: 3rem 0;
+}
+
+.news-card {
+    background-color: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    transition: var(--transition);
+    margin-bottom: 2rem;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.news-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.news-content {
+    padding: 1.5rem;
+}
+
+.news-date {
+    color: var(--muted-text);
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.news-title {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: 0.75rem;
+}
+
+.news-excerpt {
+    color: var(--body-color);
+    line-height: 1.6;
+}
+
+/* Footer */
+.main-footer {
+    background-color: var(--footer-bg);
+    color: white;
+    padding: 3rem 0 1rem;
+}
+
+.footer-section h4 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-section a:hover {
+    color: white;
+    padding-left: 5px;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 2rem;
+    padding-top: 1rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Utility Classes */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -0.5rem;
+}
+
+.col {
+    flex: 1;
+    padding: 0 0.5rem;
+}
+
+.col-md-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding: 0 0.5rem;
+}
+
+.col-md-4 {
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+    padding: 0 0.5rem;
+}
+
+.col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 0 0.5rem;
+}
+
+.col-md-8 {
+    flex: 0 0 66.666%;
+    max-width: 66.666%;
+    padding: 0 0.5rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mb-2 {
+    margin-bottom: 2rem;
+}
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-nav ul {
+        flex-direction: column;
+    }
+    
+    .hero-content h2 {
+        font-size: 2rem;
+    }
+    
+    .col-md-3, .col-md-4, .col-md-6, .col-md-8 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+}

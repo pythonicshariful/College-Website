@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}অ্যাডমিন ড্যাশবোর্ড | AMW College{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-tachometer-alt"></i> অ্যাডমিন ড্যাশবোর্ড</h1>
+        <div>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary"><i class="fas fa-home"></i> হোমপেজ</a>
+            <a href="{{ url_for('admin_logout') }}" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> লগআউট</a>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-number">{{ total_notices }}</span>
+            <span class="stat-label">মোট নোটিশ</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ total_results }}</span>
+            <span class="stat-label">মোট ফলাফল</span>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="admin-card">
+        <h2><i class="fas fa-bolt"></i> দ্রুত কাজ</h2>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="{{ url_for('admin_notices') }}" class="btn btn-primary">
+                <i class="fas fa-bell"></i> নোটিশ ম্যানেজ করুন
+            </a>
+            <a href="{{ url_for('admin_results') }}" class="btn btn-primary">
+                <i class="fas fa-chart-line"></i> ফলাফল ম্যানেজ করুন
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Notices -->
+    <div class="admin-card">
+        <h2><i class="fas fa-bell"></i> সাম্প্রতিক নোটিশ</h2>
+        {% if recent_notices %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>শিরোনাম</th>
+                    <th>তারিখ</th>
+                    <th>তৈরি হয়েছে</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for notice in recent_notices %}
+                <tr>
+                    <td>{{ notice.title }}</td>
+                    <td>{{ notice.date.strftime('%d/%m/%Y') if notice.date else 'N/A' }}</td>
+                    <td>{{ notice.created_at.strftime('%d/%m/%Y %H:%M') if notice.created_at else 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="text-align: center; padding: 2rem; color: #999;">কোনো নোটিশ নেই</p>
+        {% endif %}
+    </div>
+
+    <!-- Recent Results -->
+    <div class="admin-card">
+        <h2><i class="fas fa-chart-line"></i> সাম্প্রতিক ফলাফল</h2>
+        {% if recent_results %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>শিরোনাম</th>
+                    <th>শ্রেণি</th>
+                    <th>পরীক্ষা</th>
+                    <th>তারিখ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in recent_results %}
+                <tr>
+                    <td>{{ result.title }}</td>
+                    <td>{{ result.class_name or 'N/A' }}</td>
+                    <td>{{ result.exam_type or 'N/A' }}</td>
+                    <td>{{ result.date.strftime('%d/%m/%Y') if result.date else 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="text-align: center; padding: 2rem; color: #999;">কোনো ফলাফল নেই</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
