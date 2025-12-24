@@ -4,8 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="সরকারি আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ, নারায়ণগঞ্জ">
-    <title>{% block title %}সরকারি আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ{% endblock %}</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="সরকারি আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ, নারায়ণগঞ্জ - Govt. Adamjeenagar Merchant Workers' College, Narayanganj. একটি ঐতিহ্যবাহী শিক্ষা প্রতিষ্ঠান।">
+    <meta name="keywords"
+        content="আদমজীনগর কলেজ, নারায়ণগঞ্জ কলেজ, সরকারি কলেজ, AMW College, Adamjeenagar College, Merchant Workers College, Narayanganj College">
+    <meta name="author" content="Govt. Adamjeenagar Merchant Workers' College">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Bengali">
+    <meta name="geo.region" content="BD-13">
+    <meta name="geo.placename" content="Narayanganj">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:title"
+        content="{% block og_title %}সরকারি আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ | Govt. Adamjeenagar Merchant Workers' College{% endblock %}">
+    <meta property="og:description"
+        content="নারায়ণগঞ্জের ঐতিহ্যবাহী শিক্ষা প্রতিষ্ঠান - A prestigious educational institution in Narayanganj">
+    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
+    <meta property="og:locale" content="bn_BD">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title"
+        content="{% block twitter_title %}সরকারি আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ{% endblock %}">
+    <meta name="twitter:description" content="নারায়ণগঞ্জের ঐতিহ্যবাহী শিক্ষা প্রতিষ্ঠান">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ request.url }}">
+
+    <title>{% block title %}সরকারি আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ | Govt. Adamjeenagar Merchant Workers' College{%
+        endblock %}</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +50,36 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "সরকারি আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ",
+        "alternateName": "Govt. Adamjeenagar Merchant Workers' College",
+        "url": "{{ request.url_root }}",
+        "logo": "{{ url_for('static', filename='images/logo.png', _external=True) }}",
+        "description": "নারায়ণগঞ্জের একটি ঐতিহ্যবাহী সরকারি কলেজ",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "কদমতলী, আদমজী ইপিজেড",
+            "addressLocality": "নারায়ণগঞ্জ",
+            "addressRegion": "ঢাকা বিভাগ",
+            "addressCountry": "BD"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "23.6238",
+            "longitude": "90.4963"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Service",
+            "email": "info@amwcollege.edu.bd"
+        }
+    }
+    </script>
 
     {% block extra_css %}{% endblock %}
 </head>

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /uploads/
+
+# Sitemap location
+Sitemap: {{ url_for('sitemap', _external=True) }}

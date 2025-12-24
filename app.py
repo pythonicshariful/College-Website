@@ -48,6 +48,47 @@ def index():
                          principal=principal,
                          quick_links=quick_links)
 
+# SEO Routes
+@app.route('/robots.txt')
+def robots():
+    """Robots.txt for search engines"""
+    return send_from_directory(app.static_folder, 'robots.txt')
+
+@app.route('/sitemap.xml')
+def sitemap():
+    """Generate XML sitemap"""
+    from flask import make_response
+    
+    pages = []
+    # Add static pages
+    pages.append({'loc': url_for('index', _external=True), 'changefreq': 'daily', 'priority': '1.0'})
+    pages.append({'loc': url_for('notices', _external=True), 'changefreq': 'daily', 'priority': '0.9'})
+    pages.append({'loc': url_for('results', _external=True), 'changefreq': 'weekly', 'priority': '0.8'})
+    pages.append({'loc': url_for('result_lookup', _external=True), 'changefreq': 'weekly', 'priority': '0.8'})
+    pages.append({'loc': url_for('gallery', _external=True), 'changefreq': 'weekly', 'priority': '0.7'})
+    
+    # Add dynamic pages
+    dynamic_pages = Page.query.filter_by(is_published=True).all()
+    for page in dynamic_pages:
+        pages.append({'loc': url_for('view_page', slug=page.slug, _external=True), 'changefreq': 'monthly', 'priority': '0.6'})
+    
+    # Generate XML
+    sitemap_xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    sitemap_xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    
+    for page in pages:
+        sitemap_xml += '  <url>\n'
+        sitemap_xml += f'    <loc>{page["loc"]}</loc>\n'
+        sitemap_xml += f'    <changefreq>{page["changefreq"]}</changefreq>\n'
+        sitemap_xml += f'    <priority>{page["priority"]}</priority>\n'
+        sitemap_xml += '  </url>\n'
+    
+    sitemap_xml += '</urlset>'
+    
+    response = make_response(sitemap_xml)
+    response.headers['Content-Type'] = 'application/xml'
+    return response
+
 @app.route('/notices')
 def notices():
     """All notices page"""
