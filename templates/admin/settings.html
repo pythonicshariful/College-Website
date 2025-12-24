@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}সাইট সেটিংস | AMW College Admin{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-cog"></i> সাইট সেটিংস</h1>
+        <div>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i>
+                ড্যাশবোর্ড</a>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <h2><i class="fas fa-info-circle"></i> সাধারণ তথ্য</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="college_name_bn">কলেজের নাম (বাংলা) *</label>
+                <input type="text" id="college_name_bn" name="college_name_bn" value="{{ settings.college_name_bn }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="college_name_en">College Name (English) *</label>
+                <input type="text" id="college_name_en" name="college_name_en" value="{{ settings.college_name_en }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="logo">লোগো</label>
+                {% if settings.logo %}
+                <div style="margin-bottom: 1rem;">
+                    <img src="{{ url_for('uploaded_file', filename=settings.logo) }}" alt="Current Logo"
+                        style="max-width: 150px;">
+                </div>
+                {% endif %}
+                <input type="file" id="logo" name="logo" accept=".png,.jpg,.jpeg,.webp">
+            </div>
+
+            <h3 style="margin-top: 2rem;">যোগাযোগের তথ্য</h3>
+
+            <div class="form-group">
+                <label for="contact_phone">ফোন নম্বর</label>
+                <input type="text" id="contact_phone" name="contact_phone" value="{{ settings.contact_phone }}">
+            </div>
+
+            <div class="form-group">
+                <label for="contact_email">ইমেইল</label>
+                <input type="email" id="contact_email" name="contact_email" value="{{ settings.contact_email }}">
+            </div>
+
+            <div class="form-group">
+                <label for="contact_address">ঠিকানা</label>
+                <textarea id="contact_address" name="contact_address" rows="3">{{ settings.contact_address }}</textarea>
+            </div>
+
+            <h3 style="margin-top: 2rem;">সোশ্যাল মিডিয়া</h3>
+
+            <div class="form-group">
+                <label for="facebook_url">Facebook URL</label>
+                <input type="url" id="facebook_url" name="facebook_url" value="{{ settings.facebook_url }}">
+            </div>
+
+            <div class="form-group">
+                <label for="youtube_url">YouTube URL</label>
+                <input type="url" id="youtube_url" name="youtube_url" value="{{ settings.youtube_url }}">
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> সেভ করুন
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

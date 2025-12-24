@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} | সরকারি আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="admin-card" style="max-width: 900px; margin: 2rem auto;">
+        <h1 style="color: var(--primary-maroon); margin-bottom: 1.5rem;">{{ page.title }}</h1>
+
+        <div style="line-height: 1.8; color: #333;">
+            {{ page.content | safe }}
+        </div>
+    </div>
+</div>
+{% endblock %}

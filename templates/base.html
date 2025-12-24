@@ -38,12 +38,19 @@
     <!-- Navigation -->
     <nav class="main-nav">
         <ul>
+            {% if cms_menu_items %}
+            {% for item in cms_menu_items %}
+            <li><a href="{{ item.url }}"><i class="{{ item.icon or 'fas fa-circle' }}"></i> {{ item.label }}</a></li>
+            {% endfor %}
+            {% else %}
+            <!-- Fallback menu if no CMS items -->
             <li><a href="{{ url_for('index') }}"><i class="fas fa-home"></i> হোম</a></li>
             <li><a href="#"><i class="fas fa-info-circle"></i> আমাদের সম্পর্কে</a></li>
             <li><a href="#"><i class="fas fa-graduation-cap"></i> বিভাগসমূহ</a></li>
             <li><a href="{{ url_for('notices') }}"><i class="fas fa-bell"></i> নোটিশ</a></li>
             <li><a href="{{ url_for('result_lookup') }}"><i class="fas fa-search"></i> ফলাফল দেখুন</a></li>
             <li><a href="#"><i class="fas fa-images"></i> গ্যালারি</a></li>
+            {% endif %}
             {% if current_user.is_authenticated %}
             <li><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-tachometer-alt"></i> ড্যাশবোর্ড</a></li>
             <li><a href="{{ url_for('admin_logout') }}"><i class="fas fa-sign-out-alt"></i> লগআউট</a></li>

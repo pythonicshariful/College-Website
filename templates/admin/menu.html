@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}নেভিগেশন মেনু | AMW College Admin{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-bars"></i> নেভিগেশন মেনু ম্যানেজমেন্ট</h1>
+        <div>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i>
+                ড্যাশবোর্ড</a>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <h2><i class="fas fa-plus-circle"></i> নতুন মেনু আইটেম যোগ করুন</h2>
+        <form method="POST" action="{{ url_for('admin_add_menu_item') }}">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="label">লেবেল *</label>
+                    <input type="text" id="label" name="label" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="url">URL *</label>
+                    <input type="text" id="url" name="url" required placeholder="/page/about">
+                </div>
+
+                <div class="form-group">
+                    <label for="icon">আইকন (Font Awesome)</label>
+                    <input type="text" id="icon" name="icon" placeholder="fas fa-home">
+                </div>
+
+                <div class="form-group">
+                    <label for="order">ক্রম</label>
+                    <input type="number" id="order" name="order" value="0">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="is_active" checked> সক্রিয়
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> যোগ করুন
+            </button>
+        </form>
+    </div>
+
+    <div class="admin-card">
+        <h2><i class="fas fa-list"></i> সকল মেনু আইটেম</h2>
+        {% if menu_items %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>লেবেল</th>
+                    <th>URL</th>
+                    <th>আইকন</th>
+                    <th>ক্রম</th>
+                    <th>স্ট্যাটাস</th>
+                    <th>কাজ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in menu_items %}
+                <tr>
+                    <td>{{ item.label }}</td>
+                    <td>{{ item.url }}</td>
+                    <td><i class="{{ item.icon }}"></i> {{ item.icon }}</td>
+                    <td>{{ item.order }}</td>
+                    <td>{{ 'সক্রিয়' if item.is_active else 'নিষ্ক্রিয়' }}</td>
+                    <td>
+                        <a href="{{ url_for('admin_delete_menu_item', id=item.id) }}" class="btn btn-danger"
+                            onclick="return confirm('মুছে ফেলতে চান?')">
+                            <i class="fas fa-trash"></i> মুছুন
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="text-align: center; padding: 2rem; color: #999;">কোনো মেনু আইটেম নেই</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

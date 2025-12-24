@@ -5,7 +5,54 @@ from flask import Flask, render_template, request, redirect, url_for, flash, sen
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 from config import Config
-from models import db, Notice, Result, Admin, StudentResult
+from models import (
+    db, Notice, Result, Admin, StudentResult,
+    SiteSetting, MenuItem, PrincipalMessage, QuickLink, HomeSection, Page, NewsTicker
+)
+from PIL import Image
+
+app = Flask(__name__)
+app.config.from_object(Config)
+db.init_app(app)
+
+# Initialize Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'admin_login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Admin.query.get(int(user_id))
+
+# Initialize CMS routes
+from routes_cms import init_cms_routes
+init_cms_routes(app, db, SiteSetting, MenuItem, PrincipalMessage, QuickLink, HomeSection, Page, NewsTicker)
+
+def allowed_file(filename):
+    """Check if file extension is allowed"""
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+def convert_to_webp(image_file, output_path):
+    """Convert uploaded image to WebP format"""
+    try:
+        # Open the image
+        img = Image.open(image_file)
+        
+        # Convert RGBA to RGB if necessary
+        if img.mode in ('RGBA', 'LA', 'P'):
+            background = Image.new('RGB', img.size, (255, 255, 255))
+            if img.mode == 'P':
+                img = img.convert('RGBA')
+            background.paste(img, mask=img.split()[-1] if img.mode == 'RGBA' else None)
+            img = background
+        
+        # Save as WebP
+        img.save(output_path, 'WEBP', quality=85, optimize=True)
+        return True
+    except Exception as e:
+        print(f"Error converting image to WebP: {str(e)}")
+        return False
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -20,6 +67,10 @@ login_manager.login_view = 'admin_login'
 def load_user(user_id):
     return Admin.query.get(int(user_id))
 
+# Initialize CMS routes
+from routes_cms import init_cms_routes
+init_cms_routes(app, db, SiteSetting, MenuItem, PrincipalMessage, QuickLink, HomeSection, Page, NewsTicker)
+
 def allowed_file(filename):
     """Check if file extension is allowed"""
     return '.' in filename and \
@@ -30,7 +81,15 @@ def allowed_file(filename):
 def index():
     """Homepage"""
     notices = Notice.query.order_by(Notice.date.desc()).limit(5).all()
-    return render_template('index.html', notices=notices)
+    
+    # Get CMS data for homepage
+    principal = PrincipalMessage.query.filter_by(is_active=True).first()
+    quick_links = QuickLink.query.filter_by(is_active=True).order_by(QuickLink.order).all()
+    
+    return render_template('index.html', 
+                         notices=notices,
+                         principal=principal,
+                         quick_links=quick_links)
 
 @app.route('/notices')
 def notices():
@@ -101,6 +160,8 @@ def result_lookup():
 @app.route('/uploads/<path:filename>')
 def uploaded_file(filename):
     """Serve uploaded files"""
+    # Normalize path separators (replace backslashes with forward slashes)
+    filename = filename.replace('\\', '/')
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 # Admin Routes

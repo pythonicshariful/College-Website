@@ -39,11 +39,26 @@
             <!-- Principal's Message -->
             <div class="sidebar-section">
                 <h3><i class="fas fa-user-tie"></i> অধ্যক্ষ মহোদয়</h3>
+                {% if principal %}
+                {% if principal.photo %}
+                <img src="{{ url_for('uploaded_file', filename=principal.photo) }}" alt="{{ principal.name }}"
+                    class="principal-img">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/principal-sir-pic.webp') }}" alt="Principal"
+                    class="principal-img"
+                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect fill=%22%237B1F1F%22 width=%22300%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3EPrincipal%3C/text%3E%3C/svg%3E'">
+                {% endif %}
+                <h4 style="margin-top: 1rem; color: var(--primary-maroon);">{{ principal.name }}</h4>
+                <p style="font-style: italic; color: #666;">{{ principal.designation }}</p>
+                <p>{{ principal.message }}</p>
+                {% else %}
+                <!-- Fallback if no principal data -->
                 <img src="{{ url_for('static', filename='images/principal-sir-pic.webp') }}" alt="Principal"
                     class="principal-img"
                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect fill=%22%237B1F1F%22 width=%22300%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3EPrincipal%3C/text%3E%3C/svg%3E'">
                 <p>আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ একটি ঐতিহ্যবাহী শিক্ষা প্রতিষ্ঠান। আমরা শিক্ষার্থীদের সর্বোত্তম
                     শিক্ষা প্রদানে প্রতিশ্রুতিবদ্ধ।</p>
+                {% endif %}
             </div>
 
             <!-- Emergency Hotline -->
@@ -60,11 +75,20 @@
             <div class="sidebar-section">
                 <h3><i class="fas fa-link"></i> দ্রুত লিংক</h3>
                 <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    {% if quick_links %}
+                    {% for link in quick_links %}
+                    <a href="{{ link.url }}"
+                        style="color: var(--primary-maroon); text-decoration: none; padding: 0.5rem; border-left: 3px solid var(--accent-gold);">
+                        <i class="{{ link.icon or 'fas fa-link' }}"></i> {{ link.title }}
+                    </a>
+                    {% endfor %}
+                    {% else %}
+                    <!-- Fallback quick links -->
                     <a href="{{ url_for('notices') }}"
                         style="color: var(--primary-maroon); text-decoration: none; padding: 0.5rem; border-left: 3px solid var(--accent-gold);">
                         <i class="fas fa-bell"></i> নোটিশ
                     </a>
-                    <a href="{{ url_for('results') }}"
+                    <a href="{{ url_for('result_lookup') }}"
                         style="color: var(--primary-maroon); text-decoration: none; padding: 0.5rem; border-left: 3px solid var(--accent-gold);">
                         <i class="fas fa-chart-line"></i> ফলাফল
                     </a>
@@ -72,6 +96,7 @@
                         style="color: var(--primary-maroon); text-decoration: none; padding: 0.5rem; border-left: 3px solid var(--accent-gold);">
                         <i class="fas fa-user-plus"></i> ভর্তি
                     </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

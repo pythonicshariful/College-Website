@@ -115,3 +115,10 @@ class Admin(UserMixin, db.Model):
     
     def __repr__(self):
         return f'<Admin {self.username}>'
+
+
+# Import CMS models
+from models_cms import (
+    SiteSetting, MenuItem, PrincipalMessage, 
+    QuickLink, HomeSection, Page, NewsTicker
+)

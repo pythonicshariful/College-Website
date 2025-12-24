@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}হোমপেজ এডিট | AMW College Admin{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-home"></i> হোমপেজ কন্টেন্ট ম্যানেজমেন্ট</h1>
+        <div>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i>
+                ড্যাশবোর্ড</a>
+        </div>
+    </div>
+
+    <!-- Principal's Message -->
+    <div class="admin-card">
+        <h2><i class="fas fa-user-tie"></i> অধ্যক্ষের বার্তা</h2>
+        <form method="POST" action="{{ url_for('admin_update_principal') }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">নাম *</label>
+                <input type="text" id="name" name="name" value="{{ principal.name if principal else '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="designation">পদবী *</label>
+                <input type="text" id="designation" name="designation"
+                    value="{{ principal.designation if principal else '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="photo">ছবি</label>
+                {% if principal and principal.photo %}
+                <div style="margin-bottom: 1rem;">
+                    <img src="{{ url_for('uploaded_file', filename=principal.photo) }}" alt="Principal"
+                        style="max-width: 150px; border-radius: 8px;">
+                </div>
+                {% endif %}
+                <input type="file" id="photo" name="photo" accept=".jpg,.jpeg,.png,.webp">
+            </div>
+
+            <div class="form-group">
+                <label for="message">বার্তা *</label>
+                <textarea id="message" name="message" rows="6"
+                    required>{{ principal.message if principal else '' }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> আপডেট করুন
+            </button>
+        </form>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="admin-card">
+        <h2><i class="fas fa-link"></i> দ্রুত লিংক</h2>
+
+        <!-- Add Quick Link Form -->
+        <form method="POST" action="{{ url_for('admin_add_quick_link') }}"
+            style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+            <h3 style="margin-bottom: 1rem;">নতুন লিংক যোগ করুন</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="title">শিরোনাম *</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="url">URL *</label>
+                    <input type="text" id="url" name="url" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="icon">আইকন (Font Awesome)</label>
+                    <input type="text" id="icon" name="icon" placeholder="fas fa-bell">
+                </div>
+
+                <div class="form-group">
+                    <label for="color">রঙ</label>
+                    <input type="color" id="color" name="color" value="#7B1F1F">
+                </div>
+
+                <div class="form-group">
+                    <label for="order">ক্রম</label>
+                    <input type="number" id="order" name="order" value="0">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i> যোগ করুন
+            </button>
+        </form>
+
+        <!-- Existing Quick Links -->
+        {% if quick_links %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>শিরোনাম</th>
+                    <th>URL</th>
+                    <th>আইকন</th>
+                    <th>ক্রম</th>
+                    <th>কাজ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for link in quick_links %}
+                <tr>
+                    <td>{{ link.title }}</td>
+                    <td>{{ link.url }}</td>
+                    <td><i class="{{ link.icon }}"></i> {{ link.icon }}</td>
+                    <td>{{ link.order }}</td>
+                    <td>
+                        <a href="{{ url_for('admin_delete_quick_link', id=link.id) }}" class="btn btn-danger"
+                            onclick="return confirm('মুছে ফেলতে চান?')">
+                            <i class="fas fa-trash"></i> মুছুন
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="text-align: center; padding: 2rem; color: #999;">কোনো দ্রুত লিংক নেই</p>
+        {% endif %}
+    </div>
+
+    <!-- Homepage Sections -->
+    <div class="admin-card">
+        <h2><i class="fas fa-th-large"></i> হোমপেজ সেকশন</h2>
+
+        <!-- Add Section Form -->
+        <form method="POST" action="{{ url_for('admin_add_home_section') }}"
+            style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+            <h3 style="margin-bottom: 1rem;">নতুন সেকশন যোগ করুন</h3>
+            <div class="form-group">
+                <label for="section_key">সেকশন কী * (ইংরেজিতে, যেমন: about, hotline)</label>
+                <input type="text" id="section_key" name="section_key" required>
+            </div>
+
+            <div class="form-group">
+                <label for="section_title">শিরোনাম *</label>
+                <input type="text" id="section_title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="content">কন্টেন্ট</label>
+                <textarea id="content" name="content" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="section_order">ক্রম</label>
+                <input type="number" id="section_order" name="order" value="0">
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i> যোগ করুন
+            </button>
+        </form>
+
+        <!-- Existing Sections -->
+        {% if sections %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>কী</th>
+                    <th>শিরোনাম</th>
+                    <th>ক্রম</th>
+                    <th>স্ট্যাটাস</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for section in sections %}
+                <tr>
+                    <td>{{ section.section_key }}</td>
+                    <td>{{ section.title }}</td>
+                    <td>{{ section.order }}</td>
+                    <td>{{ 'সক্রিয়' if section.is_active else 'নিষ্ক্রিয়' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="text-align: center; padding: 2rem; color: #999;">কোনো সেকশন নেই</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

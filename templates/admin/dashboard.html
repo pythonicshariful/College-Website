@@ -26,7 +26,29 @@
 
     <!-- Quick Actions -->
     <div class="admin-card">
-        <h2><i class="fas fa-bolt"></i> দ্রুত কাজ</h2>
+        <h2><i class="fas fa-bolt"></i> কন্টেন্ট ম্যানেজমেন্ট</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <a href="{{ url_for('admin_homepage') }}" class="btn btn-primary">
+                <i class="fas fa-home"></i> হোমপেজ এডিট
+            </a>
+            <a href="{{ url_for('admin_menu') }}" class="btn btn-primary">
+                <i class="fas fa-bars"></i> নেভিগেশন মেনু
+            </a>
+            <a href="{{ url_for('admin_pages') }}" class="btn btn-primary">
+                <i class="fas fa-file-alt"></i> পেজ ম্যানেজমেন্ট
+            </a>
+            <a href="{{ url_for('admin_newsticker') }}" class="btn btn-primary">
+                <i class="fas fa-newspaper"></i> নিউজ টিকার
+            </a>
+            <a href="{{ url_for('admin_settings') }}" class="btn btn-primary">
+                <i class="fas fa-cog"></i> সাইট সেটিংস
+            </a>
+        </div>
+    </div>
+
+    <!-- Data Management -->
+    <div class="admin-card">
+        <h2><i class="fas fa-database"></i> ডেটা ম্যানেজমেন্ট</h2>
         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
             <a href="{{ url_for('admin_notices') }}" class="btn btn-primary">
                 <i class="fas fa-bell"></i> নোটিশ ম্যানেজ করুন
