@@ -50,7 +50,7 @@
                 {% endif %}
                 <h4 style="margin-top: 1rem; color: var(--primary-maroon);">{{ principal.name }}</h4>
                 <p style="font-style: italic; color: #666;">{{ principal.designation }}</p>
-                <p>{{ principal.message }}</p>
+                <p style="white-space: pre-line;">{{ principal.message }}</p>
                 {% else %}
                 <!-- Fallback if no principal data -->
                 <img src="{{ url_for('static', filename='images/principal-sir-pic.webp') }}" alt="Principal"

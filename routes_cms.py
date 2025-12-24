@@ -9,8 +9,10 @@ import os
 import json
 
 
-def init_cms_routes(app, db, SiteSetting, MenuItem, PrincipalMessage, QuickLink, HomeSection, Page, NewsTicker):
+def init_cms_routes(app, db, Gallery, SiteSetting, MenuItem, PrincipalMessage, QuickLink, HomeSection, Page, NewsTicker):
     """Initialize CMS routes"""
+    
+    from PIL import Image
     
     # Helper function to get setting value
     def get_setting(key, default=''):
@@ -362,6 +364,101 @@ def init_cms_routes(app, db, SiteSetting, MenuItem, PrincipalMessage, QuickLink,
             db.session.rollback()
         
         return redirect(url_for('admin_newsticker'))
+    
+    # ==================== GALLERY ====================
+    
+    @app.route('/admin/gallery')
+    @login_required
+    def admin_gallery():
+        """Gallery management"""
+        photos = Gallery.query.order_by(Gallery.order, Gallery.created_at.desc()).all()
+        return render_template('admin/gallery.html', photos=photos)
+    
+    @app.route('/admin/gallery/add', methods=['POST'])
+    @login_required
+    def admin_add_gallery_photo():
+        """Add gallery photo"""
+        try:
+            if 'photo' not in request.files:
+                flash('ছবি নির্বাচন করুন', 'error')
+                return redirect(url_for('admin_gallery'))
+            
+            photo = request.files['photo']
+            if not photo or not photo.filename:
+                flash('ছবি নির্বাচন করুন', 'error')
+                return redirect(url_for('admin_gallery'))
+            
+            # Generate WebP filename
+            base_filename = secure_filename(photo.filename)
+            name_without_ext = os.path.splitext(base_filename)[0]
+            filename = f"gallery_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{name_without_ext}.webp"
+            photo_path = os.path.join('gallery', filename)
+            full_path = os.path.join(app.config['UPLOAD_FOLDER'], photo_path)
+            
+            # Ensure directory exists
+            os.makedirs(os.path.dirname(full_path), exist_ok=True)
+            
+            # Convert to WebP
+            img = Image.open(photo)
+            # Convert RGBA to RGB if necessary
+            if img.mode in ('RGBA', 'LA', 'P'):
+                background = Image.new('RGB', img.size, (255, 255, 255))
+                if img.mode == 'P':
+                    img = img.convert('RGBA')
+                background.paste(img, mask=img.split()[-1] if img.mode == 'RGBA' else None)
+                img = background
+            
+            # Save as WebP
+            img.save(full_path, 'WEBP', quality=85, optimize=True)
+            
+            # Create gallery entry
+            gallery_photo = Gallery(
+                title=request.form.get('title', 'Untitled'),
+                description=request.form.get('description', ''),
+                image_path=photo_path.replace('\\', '/'),
+                order=int(request.form.get('order', 0))
+            )
+            db.session.add(gallery_photo)
+            db.session.commit()
+            
+            flash('ছবি যোগ করা হয়েছে!', 'success')
+        except Exception as e:
+            flash(f'ত্রুটি: {str(e)}', 'error')
+            db.session.rollback()
+        
+        return redirect(url_for('admin_gallery'))
+    
+    @app.route('/admin/gallery/delete/<int:id>', methods=['GET', 'POST'])
+    @login_required
+    def admin_delete_gallery_photo(id):
+        """Delete gallery photo"""
+        try:
+            photo = Gallery.query.get_or_404(id)
+            
+            # Delete file
+            if photo.image_path:
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], photo.image_path)
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+            
+            db.session.delete(photo)
+            db.session.commit()
+            flash('ছবি মুছে ফেলা হয়েছে!', 'success')
+        except Exception as e:
+            flash(f'ত্রুটি: {str(e)}', 'error')
+            db.session.rollback()
+        
+        return redirect(url_for('admin_gallery'))
+    
+    # ==================== PUBLIC GALLERY ====================
+    
+    @app.route('/gallery')
+    def gallery():
+        """Public gallery page"""
+        photos = Gallery.query.filter_by(is_active=True).order_by(Gallery.order, Gallery.created_at.desc()).all()
+        # Convert to dict for JSON serialization in template
+        photos_dict = [photo.to_dict() for photo in photos]
+        return render_template('gallery.html', photos=photos, photos_json=photos_dict)
     
     # ==================== PUBLIC PAGES ====================
     

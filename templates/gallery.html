@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block title %}গ্যালারি | সরকারি আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-images"></i> ফটো গ্যালারি</h1>
+        <p>আমাদের কলেজের বিভিন্ন কার্যক্রম ও অনুষ্ঠানের ছবি</p>
+    </div>
+
+    {% if photos %}
+    <div class="gallery-grid">
+        {% for photo in photos %}
+        <div class="gallery-item" onclick="openLightbox({{ loop.index0 }})">
+            <img src="{{ url_for('uploaded_file', filename=photo.image_path) }}" alt="{{ photo.title }}" loading="lazy">
+            <div class="gallery-overlay">
+                <h3>{{ photo.title }}</h3>
+                {% if photo.description %}
+                <p>{{ photo.description }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-prev" onclick="event.stopPropagation(); changeImage(-1)">&#10094;</span>
+        <span class="lightbox-next" onclick="event.stopPropagation(); changeImage(1)">&#10095;</span>
+        <img id="lightbox-img" src="" alt="">
+        <div id="lightbox-caption"></div>
+    </div>
+
+    <script>
+        const photos = {{ photos_json| tojson }};
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            const photo = photos[index];
+            document.getElementById('lightbox').style.display = 'flex';
+            document.getElementById('lightbox-img').src = '/uploads/' + photo.image_path;
+            document.getElementById('lightbox-caption').innerHTML = '<h3>' + photo.title + '</h3>' +
+                (photo.description ? '<p>' + photo.description + '</p>' : '');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function changeImage(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = photos.length - 1;
+            if (currentIndex >= photos.length) currentIndex = 0;
+
+            const photo = photos[currentIndex];
+            document.getElementById('lightbox-img').src = '/uploads/' + photo.image_path;
+            document.getElementById('lightbox-caption').innerHTML = '<h3>' + photo.title + '</h3>' +
+                (photo.description ? '<p>' + photo.description + '</p>' : '');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') changeImage(-1);
+            if (e.key === 'ArrowRight') changeImage(1);
+        });
+    </script>
+    {% else %}
+    <div
+        style="text-align: center; padding: 4rem 2rem; background: white; border-radius: var(--border-radius-lg); margin-top: 2rem;">
+        <i class="fas fa-images" style="font-size: 4rem; color: #ccc; margin-bottom: 1rem;"></i>
+        <h3 style="color: #666;">গ্যালারিতে এখনও কোনো ছবি নেই</h3>
+        <p style="color: #999;">শীঘ্রই ছবি যোগ করা হবে</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem;
+        background: white;
+        border-radius: var(--border-radius-lg);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .page-header h1 {
+        color: var(--primary-maroon);
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+        color: #666;
+        font-size: 1.1rem;
+    }
+
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--border-radius-lg);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        aspect-ratio: 4/3;
+    }
+
+    .gallery-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+
+    .gallery-item:hover img {
+        transform: scale(1.05);
+    }
+
+    .gallery-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        color: white;
+        padding: 1.5rem;
+        transform: translateY(100%);
+        transition: transform 0.3s;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+        transform: translateY(0);
+    }
+
+    .gallery-overlay h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.25rem;
+    }
+
+    .gallery-overlay p {
+        margin: 0;
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    /* Lightbox Styles */
+    .lightbox {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.95);
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .lightbox img {
+        max-width: 90%;
+        max-height: 80vh;
+        object-fit: contain;
+        animation: zoomIn 0.3s;
+    }
+
+    @keyframes zoomIn {
+        from {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 35px;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .lightbox-close:hover {
+        color: #bbb;
+    }
+
+    .lightbox-prev,
+    .lightbox-next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        padding: 20px;
+        user-select: none;
+        transition: 0.3s;
+    }
+
+    .lightbox-prev:hover,
+    .lightbox-next:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .lightbox-prev {
+        left: 0;
+    }
+
+    .lightbox-next {
+        right: 0;
+    }
+
+    #lightbox-caption {
+        color: white;
+        text-align: center;
+        padding: 20px;
+        max-width: 700px;
+    }
+
+    #lightbox-caption h3 {
+        margin: 0 0 10px 0;
+        font-size: 1.5rem;
+    }
+
+    #lightbox-caption p {
+        margin: 0;
+        opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+        .gallery-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .lightbox img {
+            max-width: 95%;
+            max-height: 70vh;
+        }
+
+        .lightbox-prev,
+        .lightbox-next {
+            font-size: 30px;
+            padding: 10px;
+        }
+    }
+</style>
+{% endblock %}

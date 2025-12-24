@@ -119,6 +119,6 @@ class Admin(UserMixin, db.Model):
 
 # Import CMS models
 from models_cms import (
-    SiteSetting, MenuItem, PrincipalMessage, 
+    Gallery, SiteSetting, MenuItem, PrincipalMessage, 
     QuickLink, HomeSection, Page, NewsTicker
 )

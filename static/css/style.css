@@ -87,6 +87,26 @@ body {
 .main-nav {
     background-color: var(--dark-maroon);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 1rem;
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+}
+
+.nav-toggle:hover {
+    color: var(--accent-gold);
 }
 
 .main-nav ul {
@@ -527,16 +547,52 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+
+    /* Mobile Navigation */
+    .nav-toggle {
+        display: block;
+    }
+
+    .main-nav ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--dark-maroon);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+    }
+
+    .main-nav ul.active {
+        display: flex;
+    }
+
+    .main-nav li {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .main-nav li:last-child {
+        border-bottom: none;
+    }
+
+    .main-nav a {
+        padding: 1rem 1.5rem;
+    }
+
+    .nav-toggle.active i::before {
+        content: "\f00d";
+        /* Font Awesome times icon */
+    }
+
+    /* Other responsive styles */
     .two-column {
         grid-template-columns: 1fr;
     }
 
     .about-content {
         grid-template-columns: 1fr;
-    }
-
-    .main-nav ul {
-        flex-direction: column;
     }
 
     .header-content {

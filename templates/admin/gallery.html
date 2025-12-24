@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}গ্যালারি ম্যানেজমেন্ট | অ্যাডমিন{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-images"></i> গ্যালারি ম্যানেজমেন্ট</h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরে যান
+        </a>
+    </div>
+
+    <!-- Add Photo Form -->
+    <div class="admin-card">
+        <h2><i class="fas fa-plus-circle"></i> নতুন ছবি যোগ করুন</h2>
+        <form method="POST" action="{{ url_for('admin_add_gallery_photo') }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">শিরোনাম *</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">বিবরণ</label>
+                <textarea id="description" name="description" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="photo">ছবি * (JPG, PNG, WebP)</label>
+                <input type="file" id="photo" name="photo" accept="image/*" required>
+            </div>
+
+            <div class="form-group">
+                <label for="order">ক্রম (ছোট সংখ্যা প্রথমে দেখাবে)</label>
+                <input type="number" id="order" name="order" value="0">
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-upload"></i> ছবি আপলোড করুন
+            </button>
+        </form>
+    </div>
+
+    <!-- Gallery Photos List -->
+    <div class="admin-card">
+        <h2><i class="fas fa-images"></i> গ্যালারি ছবি ({{ photos|length }})</h2>
+
+        {% if photos %}
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+            {% for photo in photos %}
+            <div
+                style="background: white; border: 1px solid var(--border-color); border-radius: var(--border-radius-md); overflow: hidden;">
+                <img src="{{ url_for('uploaded_file', filename=photo.image_path) }}" alt="{{ photo.title }}"
+                    style="width: 100%; height: 200px; object-fit: cover;">
+                <div style="padding: 1rem;">
+                    <h4 style="margin: 0 0 0.5rem 0; color: var(--primary-maroon);">{{ photo.title }}</h4>
+                    {% if photo.description %}
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">{{ photo.description[:100] }}...
+                    </p>
+                    {% endif %}
+                    <p style="font-size: 0.85rem; color: #999;">ক্রম: {{ photo.order }}</p>
+                    <a href="{{ url_for('admin_delete_gallery_photo', id=photo.id) }}" class="btn btn-danger btn-sm"
+                        onclick="return confirm('এই ছবিটি মুছে ফেলতে চান?')">
+                        <i class="fas fa-trash"></i> মুছে ফেলুন
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="text-align: center; padding: 2rem; color: #999;">কোনো ছবি নেই। উপরের ফর্ম ব্যবহার করে ছবি যোগ করুন।
+        </p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+</style>
+{% endblock %}

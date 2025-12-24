@@ -5,6 +5,32 @@ from datetime import datetime
 from models import db
 
 
+class Gallery(db.Model):
+    """Gallery photos model"""
+    __tablename__ = 'gallery'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text)
+    image_path = db.Column(db.String(300), nullable=False)
+    order = db.Column(db.Integer, default=0)
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<Gallery {self.title}>'
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'image_path': self.image_path,
+            'order': self.order,
+            'is_active': self.is_active
+        }
+
+
 class SiteSetting(db.Model):
     """Site settings model for global configuration"""
     __tablename__ = 'site_settings'

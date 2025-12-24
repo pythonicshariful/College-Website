@@ -37,7 +37,10 @@
 
     <!-- Navigation -->
     <nav class="main-nav">
-        <ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul id="navMenu">
             {% if cms_menu_items %}
             {% for item in cms_menu_items %}
             <li><a href="{{ item.url }}"><i class="{{ item.icon or 'fas fa-circle' }}"></i> {{ item.label }}</a></li>
@@ -49,7 +52,7 @@
             <li><a href="#"><i class="fas fa-graduation-cap"></i> বিভাগসমূহ</a></li>
             <li><a href="{{ url_for('notices') }}"><i class="fas fa-bell"></i> নোটিশ</a></li>
             <li><a href="{{ url_for('result_lookup') }}"><i class="fas fa-search"></i> ফলাফল দেখুন</a></li>
-            <li><a href="#"><i class="fas fa-images"></i> গ্যালারি</a></li>
+            <li><a href="{{ url_for('gallery') }}"><i class="fas fa-images"></i> গ্যালারি</a></li>
             {% endif %}
             {% if current_user.is_authenticated %}
             <li><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-tachometer-alt"></i> ড্যাশবোর্ড</a></li>
@@ -99,6 +102,38 @@
                 সর্বস্বত্ব সংরক্ষিত।</p>
         </div>
     </footer>
+
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navToggle = document.getElementById('navToggle');
+            const navMenu = document.getElementById('navMenu');
+
+            if (navToggle) {
+                navToggle.addEventListener('click', function () {
+                    navMenu.classList.toggle('active');
+                    this.classList.toggle('active');
+                });
+
+                // Close menu when clicking a link
+                const navLinks = navMenu.querySelectorAll('a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function () {
+                        navMenu.classList.remove('active');
+                        navToggle.classList.remove('active');
+                    });
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function (event) {
+                    if (!navToggle.contains(event.target) && !navMenu.contains(event.target)) {
+                        navMenu.classList.remove('active');
+                        navToggle.classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
 
     {% block extra_js %}{% endblock %}
 </body>
