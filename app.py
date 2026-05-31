@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import pandas as pd
 from datetime import datetime
@@ -448,7 +449,7 @@ def admin_delete_result(id):
     return redirect(url_for('admin_results'))
 
 def init_db():
-    """Initialize database and create default admin"""
+    """Initialize database and create default admin, pages, and menu items"""
     with app.app_context():
         db.create_all()
         
@@ -459,6 +460,53 @@ def init_db():
             db.session.add(admin)
             db.session.commit()
             print(f"Default admin created: {app.config['ADMIN_USERNAME']}")
+            
+        # Create default pages if they don't exist
+        if not Page.query.filter_by(slug='about').first():
+            about_page = Page(
+                slug='about',
+                title='আমাদের সম্পর্কে (About Us)',
+                content='''<h2>আমাদের সম্পর্কে</h2>
+<p>সরকারি আদমজীনগর এম.ডব্লিউ. কলেজ, নারায়ণগঞ্জ জেলার একটি ঐতিহ্যবাহী শিক্ষা প্রতিষ্ঠান। এটি কদমতলী এলাকায় আদমজী ইপিজেড এর পাশে অবস্থিত। ১৯৮০-এর দশকে জাতীয়করণ করা এই কলেজটি এলাকার শিক্ষা বিস্তারে অগ্রণী ভূমিকা পালন করে আসছে।</p>
+<p>আমাদের লক্ষ্য শিক্ষার্থীদের সুশিক্ষায় শিক্ষিত করে আদর্শ ও দক্ষ নাগরিক হিসেবে গড়ে তোলা। কলেজে উচ্চ মাধ্যমিক এবং ডিগ্রী (পাস) কোর্সে শিক্ষাদানের চমৎকার ব্যবস্থা রয়েছে।</p>''',
+                meta_description='Govt. Adamjeenagar Merchant Workers\' College - About Us',
+                is_published=True
+            )
+            db.session.add(about_page)
+            print("Default 'about' page created.")
+
+        if not Page.query.filter_by(slug='departments').first():
+            departments_page = Page(
+                slug='departments',
+                title='বিভাগসমূহ (Departments)',
+                content='''<h2>আমাদের বিভাগসমূহ</h2>
+<p>সরকারি আদমজীনগর এম.ডব্লিউ. কলেজে তিনটি প্রধান বিভাগে শিক্ষাদান করা হয়:</p>
+<ul>
+    <li><strong>বিজ্ঞান বিভাগ (Science):</strong> পদার্থবিজ্ঞান, রসায়ন, গণিত, এবং জীববিজ্ঞানসহ বিজ্ঞান চর্চার উন্নত ল্যাব ও সুযোগ-সুবিধা।</li>
+    <li><strong>ব্যবসায় শিক্ষা বিভাগ (Business Studies):</strong> হিসাববিজ্ঞান, ব্যবসায় সংগঠন ও ব্যবস্থাপনা, এবং ফিন্যান্সসহ আধুনিক ব্যবসায়িক জ্ঞান অর্জনের ব্যবস্থা।</li>
+    <li><strong>মানবিক বিভাগ (Humanities):</strong> ইতিহাস, অর্থনীতি, যুক্তিবিদ্যা, এবং সমাজবিজ্ঞানসহ মানবিক মূল্যবোধ ও সমাজ সচেতনতা বৃদ্ধি।</li>
+</ul>''',
+                meta_description='Govt. Adamjeenagar Merchant Workers\' College - Academic Departments',
+                is_published=True
+            )
+            db.session.add(departments_page)
+            print("Default 'departments' page created.")
+
+        # Create default menu items if the MenuItem table is empty
+        if MenuItem.query.count() == 0:
+            menu_items = [
+                MenuItem(label='হোম', url='/', icon='fas fa-home', order=1, is_active=True),
+                MenuItem(label='আমাদের সম্পর্কে', url='/page/about', icon='fas fa-info-circle', order=2, is_active=True),
+                MenuItem(label='বিভাগসমূহ', url='/page/departments', icon='fas fa-graduation-cap', order=3, is_active=True),
+                MenuItem(label='নোটিশ', url='/notices', icon='fas fa-bell', order=4, is_active=True),
+                MenuItem(label='ফলাফল দেখুন', url='/results/lookup', icon='fas fa-search', order=5, is_active=True),
+                MenuItem(label='গ্যালারি', url='/gallery', icon='fas fa-images', order=6, is_active=True)
+            ]
+            for item in menu_items:
+                db.session.add(item)
+            print("Default navigation menu items created.")
+            
+        db.session.commit()
 
 if __name__ == '__main__':
     init_db()

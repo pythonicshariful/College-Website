@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="admin-card" style="max-width: 800px; margin: 2rem auto;">
+    <div class="admin-card animate-fade-in" style="max-width: 800px; margin: 2rem auto;">
         <h2 style="text-align: center; color: var(--primary-maroon); margin-bottom: 2rem;">
             <i class="fas fa-search"></i> আপনার ফলাফল দেখুন
         </h2>
@@ -53,18 +53,16 @@
 
     <!-- Display Result -->
     {% if student_result %}
-    <div class="admin-card"
-        style="max-width: 900px; margin: 2rem auto; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);">
+    <div class="result-certificate-card">
         <div style="text-align: center; margin-bottom: 2rem;">
-            <h2 style="color: var(--primary-maroon); margin-bottom: 0.5rem;">
+            <h2 style="color: var(--primary-maroon); margin-bottom: 0.5rem; border-bottom: none; justify-content: center;">
                 <i class="fas fa-certificate"></i> পরীক্ষার ফলাফল
             </h2>
-            <p style="font-size: 1.125rem; color: #666;">{{ result_info.title }}</p>
+            <p style="font-size: 1.125rem; color: #555; font-weight: 500;">{{ result_info.title }}</p>
         </div>
 
         <!-- Student Info -->
-        <div
-            style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <div class="student-info-panel">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div>
                     <p style="margin-bottom: 0.5rem;"><strong>নাম:</strong> {{ student_result.student_name }}</p>
@@ -79,10 +77,9 @@
         </div>
 
         <!-- Subject Results -->
-        <div
-            style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <h3 style="color: var(--primary-maroon); margin-bottom: 1rem;">
-                <i class="fas fa-book"></i> বিষয়ভিত্তিক নম্বর
+        <div class="student-info-panel">
+            <h3 style="color: var(--primary-maroon); margin-bottom: 1rem; font-weight: 800; font-size: 1.25rem;">
+                <i class="fas fa-book" style="color: var(--accent-gold); margin-right: 0.5rem;"></i> বিষয়ভিত্তিক নম্বর
             </h3>
             <table class="table">
                 <thead>
@@ -103,26 +100,25 @@
         </div>
 
         <!-- Total & Grade -->
-        <div
-            style="background: linear-gradient(135deg, var(--primary-maroon), var(--dark-maroon)); color: white; padding: 2rem; border-radius: 8px; text-align: center;">
+        <div class="total-grade-badge">
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;">
                 <div>
-                    <p style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 0.5rem;">মোট নম্বর</p>
-                    <p style="font-size: 2rem; font-weight: 700;">{{ student_result.total_marks }}</p>
+                    <p style="font-size: 0.95rem; opacity: 0.9; margin-bottom: 0.5rem; font-weight: 500;">মোট নম্বর</p>
+                    <p style="font-size: 2.25rem; font-weight: 800; color: var(--accent-gold);">{{ student_result.total_marks }}</p>
                 </div>
                 <div>
-                    <p style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 0.5rem;">শতাংশ</p>
-                    <p style="font-size: 2rem; font-weight: 700;">{{ "%.2f"|format(student_result.percentage) }}%</p>
+                    <p style="font-size: 0.95rem; opacity: 0.9; margin-bottom: 0.5rem; font-weight: 500;">শতাংশ</p>
+                    <p style="font-size: 2.25rem; font-weight: 800; color: var(--accent-gold);">{{ "%.2f"|format(student_result.percentage) }}%</p>
                 </div>
                 <div>
-                    <p style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 0.5rem;">গ্রেড</p>
-                    <p style="font-size: 2rem; font-weight: 700;">{{ student_result.grade }}</p>
+                    <p style="font-size: 0.95rem; opacity: 0.9; margin-bottom: 0.5rem; font-weight: 500;">গ্রেড</p>
+                    <p style="font-size: 2.25rem; font-weight: 800; color: var(--accent-gold);">{{ student_result.grade }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Print Button -->
-        <div style="text-align: center; margin-top: 1.5rem;">
+        <div style="text-align: center; margin-top: 2rem;">
             <button onclick="window.print()" class="btn btn-secondary">
                 <i class="fas fa-print"></i> প্রিন্ট করুন
             </button>
@@ -130,16 +126,4 @@
     </div>
     {% endif %}
 </div>
-
-<style>
-    @media print {
-
-        .main-nav,
-        .news-ticker,
-        .main-footer,
-        button {
-            display: none !important;
-        }
-    }
-</style>
 {% endblock %}
