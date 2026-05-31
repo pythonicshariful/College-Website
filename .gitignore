@@ -1,2 +1,47 @@
-venv
-__pycache__
+# Isolated virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python cache & compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Application databases & instances
+instance/
+*.db
+*.sqlite3
+
+# Uploaded assets & media
+static/uploads/notices/
+static/uploads/results/
+static/uploads/gallery/
+static/uploads/pages/
+static/uploads/slider/
+static/uploads/principal/
+static/uploads/logos/
+static/uploads/
+
+# User-specific data and Excel tables
+exported_data.xlsx
+sample_result.xlsx
+*.xlsx
+*.xls
+*.csv
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.staging
+
+# Operating system files
+.DS_Store
+Thumbs.db
