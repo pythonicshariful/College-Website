@@ -46,18 +46,17 @@
                 {% else %}
                 <img src="{{ url_for('static', filename='images/principal-sir-pic.webp') }}" alt="Principal"
                     class="principal-img"
-                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect fill=%22%237B1F1F%22 width=%22300%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3EPrincipal%3C/text%3E%3C/svg%3E'">
+                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22320%22 viewBox=%220 0 300 320%22%3E%3Crect fill=%22%23f3f4f6%22 width=%22100%25%22 height=%22100%25%22/%3E%3Ccircle cx=%22150%22 cy=%22120%22 r=%2255%22 fill=%22%23cbd5e1%22/%3E%3Cpath d=%22M65,260 C65,200 100,180 150,180 C200,180 235,200 235,260 C235,290 65,290 65,260 Z%22 fill=%22%2394a3b8%22/%3E%3Crect x=%22135%22 y=%22200%22 width=%2230%22 height=%2240%22 fill=%22%2364748b%22/%3E%3C/svg%3E'">
                 {% endif %}
                 <h4 style="margin-top: 1rem; color: var(--primary-maroon);">{{ principal.name }}</h4>
-                <p style="font-style: italic; color: #666;">{{ principal.designation }}</p>
-                <p style="white-space: pre-line;">{{ principal.message }}</p>
+                <p style="font-style: italic; color: #666; font-weight: 500;">{{ principal.designation }}</p>
+                <p style="white-space: pre-line; line-height: 1.7; font-size: 0.95rem; color: #4b5563;">{{ principal.message }}</p>
                 {% else %}
                 <!-- Fallback if no principal data -->
                 <img src="{{ url_for('static', filename='images/principal-sir-pic.webp') }}" alt="Principal"
                     class="principal-img"
-                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect fill=%22%237B1F1F%22 width=%22300%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3EPrincipal%3C/text%3E%3C/svg%3E'">
-                <p>আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ একটি ঐতিহ্যবাহী শিক্ষা প্রতিষ্ঠান। আমরা শিক্ষার্থীদের সর্বোত্তম
-                    শিক্ষা প্রদানে প্রতিশ্রুতিবদ্ধ।</p>
+                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22320%22 viewBox=%220 0 300 320%22%3E%3Crect fill=%22%23f3f4f6%22 width=%22100%25%22 height=%22100%25%22/%3E%3Ccircle cx=%22150%22 cy=%22120%22 r=%2255%22 fill=%22%23cbd5e1%22/%3E%3Cpath d=%22M65,260 C65,200 100,180 150,180 C200,180 235,200 235,260 C235,290 65,290 65,260 Z%22 fill=%22%2394a3b8%22/%3E%3Crect x=%22135%22 y=%22200%22 width=%2230%22 height=%2240%22 fill=%22%2364748b%22/%3E%3C/svg%3E'">
+                <p style="line-height: 1.7; font-size: 0.95rem; color: #4b5563;">আদমজীনগর মার্চেন্ট ওয়ার্কার্স কলেজ একটি ঐতিহ্যবাহী শিক্ষা প্রতিষ্ঠান। আমরা শিক্ষার্থীদের সর্বোত্তম শিক্ষা প্রদানে প্রতিশ্রুতিবদ্ধ ও তাদের উজ্জ্বল ভবিষ্যৎ গড়তে নিরলস কাজ করে যাচ্ছি।</p>
                 {% endif %}
             </div>
 
@@ -66,8 +65,8 @@
                 <h3><i class="fas fa-phone-alt"></i> জরুরি হটলাইন</h3>
                 <div style="text-align: center;">
                     <img src="{{ url_for('static', filename='images/hotline.webp') }}" alt="Hotline"
-                        style="width: 100%; max-width: 250px;"
-                        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22250%22 height=%22150%22%3E%3Crect fill=%22%237B1F1F%22 width=%22250%22 height=%22150%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2224%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E999%3C/text%3E%3C/svg%3E'">
+                        style="width: 100%; max-width: 250px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);"
+                        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22250%22 height=%22150%22 viewBox=%220 0 250 150%22%3E%3Crect fill=%22%23b91c1c%22 width=%22100%25%22 height=%22100%25%22 rx=%2212%22/%3E%3Ccircle cx=%22125%22 cy=%2245%22 r=%2225%22 fill=%22white%22 fill-opacity=%220.15%22/%3E%3Cpath d=%22M120,40 C120,38 122,35 125,35 C128,35 130,38 130,40 L130,48 C130,50 128,52 125,52 C122,52 120,50 120,48 Z%22 fill=%22white%22/%3E%3Cpath d=%22M115,48 L135,48 C138,48 138,52 135,52 L115,52 C112,52 112,48 115,48 Z%22 fill=%22white%22/%3E%3Ctext x=%2250%25%22 y=%22105%25%22 font-family=%22sans-serif%22 font-weight=%22bold%22 font-size=%2232%22 fill=%22white%22 text-anchor=%22middle%22%3E999%3C/text%3E%3Ctext x=%2250%25%22 y=%22130%25%22 font-family=%22sans-serif%22 font-size=%2213%22 fill=%22%23fca5a5%22 text-anchor=%22middle%22%3EEMERGENCY HOTLINE%3C/text%3E%3C/svg%3E'">
                 </div>
             </div>
 
@@ -105,23 +104,27 @@
     <!-- Quick Access Cards -->
     <div class="quick-cards">
         <a href="#" class="quick-card">
-            <img src="{{ url_for('static', filename='images/suborno-img.webp') }}" alt="Golden Jubilee"
-                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Ccircle fill=%22%23D4AF37%22 cx=%2240%22 cy=%2240%22 r=%2240%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2230%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E50%3C/text%3E%3C/svg%3E'">
+            <div class="card-icon-wrapper gold-gradient">
+                <i class="fas fa-crown"></i>
+            </div>
             <h4>সুবর্ণজয়ন্তী কর্নার</h4>
         </a>
         <a href="#" class="quick-card">
-            <img src="{{ url_for('static', filename='images/admission.webp') }}" alt="Admission"
-                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Ccircle fill=%22%237B1F1F%22 cx=%2240%22 cy=%2240%22 r=%2240%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2240%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E+%3C/text%3E%3C/svg%3E'">
+            <div class="card-icon-wrapper maroon-gradient">
+                <i class="fas fa-user-graduate"></i>
+            </div>
             <h4>ভর্তি তথ্য</h4>
         </a>
         <a href="#" class="quick-card">
-            <img src="{{ url_for('static', filename='images/academy.webp') }}" alt="Academic"
-                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Ccircle fill=%22%237B1F1F%22 cx=%2240%22 cy=%2240%22 r=%2240%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2230%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E📚%3C/text%3E%3C/svg%3E'">
+            <div class="card-icon-wrapper teal-gradient">
+                <i class="fas fa-book-open"></i>
+            </div>
             <h4>একাডেমিক পেপার</h4>
         </a>
         <a href="{{ url_for('results') }}" class="quick-card">
-            <img src="{{ url_for('static', filename='images/result.webp') }}" alt="Results"
-                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Ccircle fill=%22%237B1F1F%22 cx=%2240%22 cy=%2240%22 r=%2240%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2230%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E📊%3C/text%3E%3C/svg%3E'">
+            <div class="card-icon-wrapper emerald-gradient">
+                <i class="fas fa-chart-bar"></i>
+            </div>
             <h4>ফলাফল</h4>
         </a>
     </div>
